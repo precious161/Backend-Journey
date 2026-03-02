@@ -1,0 +1,24 @@
+{
+  "name": "week1-http-fastify-lab",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/server/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "dev": "tsx watch src/server/app.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "fastify": "^5.7.4"
+  },
+  "devDependencies": {
+    "@types/node": "^25.3.3",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
+  },
+  "type":"module"
+
+}
