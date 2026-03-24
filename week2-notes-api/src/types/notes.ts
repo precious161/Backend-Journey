@@ -7,3 +7,8 @@ export interface Note{
   updatedAt: string
 }
 
+export interface createNote{
+  title:string
+  content?: string
+}
+
