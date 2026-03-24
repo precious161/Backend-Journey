@@ -43,3 +43,34 @@ export function findById(id: string){
 
   return foundNote;
 }
+
+export function update(id: string, title: string, content?: string):Note|undefined{
+
+  const index= notes.findIndex(note=>
+    note.id===id
+  )
+
+  if(index===-1){
+    return undefined;
+  }
+
+
+  const oldNote=notes.find(note=>
+    note.id===id
+  )
+
+if(!oldNote){
+  return undefined;
+}
+ const updatedNote: Note={
+    id,
+    title: title ?? oldNote.title ,
+    content: content ?? oldNote.content ?? "",
+    createdAt:oldNote.createdAt,
+    updatedAt: new Date().toISOString()
+  }
+
+  notes[index]=updatedNote;
+
+  return updatedNote;
+}
