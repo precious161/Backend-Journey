@@ -1,6 +1,6 @@
 
-import {create,findById,list,update} from "../repository/notes.repo.js";
-import { createNoteSchema, createParamsSchema, createQuerystringSchema, updateNoteSchema } from "../schemas/notes.schemas.js";
+import {create,findById,list,update,deleteNote} from "../repository/notes.repo.js";
+import { createNoteSchema, createParamsSchema, createQuerystringSchema, deleteNoteSchema, updateNoteSchema } from "../schemas/notes.schemas.js";
 import type { createNote, iParams, qQuery } from "../types/notes.js";
 import type { FastifyInstance } from "fastify";
 
@@ -59,6 +59,20 @@ export async function notesRoutes(fastify: FastifyInstance){
     }
 
     reply.status(200).send(updatedNote);
-  })
+  });
+
+
+  fastify.delete<{Params:iParams}>('/:id',{schema: deleteNoteSchema},async(request,reply)=>{
+
+    const {id}= request.params;
+
+    const isDeleted=deleteNote(id);
+
+    if(!isDeleted){
+      return reply.status(404).send({"error":"NotFoundError","message":"Note not found!"})
+    }
+
+    reply.status(204).send();
+  });
 }
 

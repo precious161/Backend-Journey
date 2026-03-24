@@ -74,3 +74,18 @@ if(!oldNote){
 
   return updatedNote;
 }
+
+export function deleteNote(id: string){
+
+  let index= notes.findIndex(note=>
+    note.id===id
+  )
+
+  if(index===-1){
+    return undefined;
+  }
+
+  notes.splice(index,1);
+
+  return true;
+}

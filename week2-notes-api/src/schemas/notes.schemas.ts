@@ -113,3 +113,27 @@ export const updateNoteSchema={
     }
   }
 }
+
+
+export const deleteNoteSchema={
+  params:{
+    type:'object',
+    required:['id'],
+    properties:{
+      id: { type: 'string'}
+    }
+  },
+  response:{
+    204:{
+      type: 'null',
+      description: 'No content - Successfully deleted'
+    },
+    404:{
+      type: 'object',
+      properties:{
+        error: { type: 'string'},
+        message: { type: 'string'}
+      }
+    }
+  }
+}
