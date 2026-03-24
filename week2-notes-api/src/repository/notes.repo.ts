@@ -1,3 +1,4 @@
+import { title } from "node:process";
 import type { Note } from "../types/notes.js";
 
 let notes:Note[]=[];
@@ -18,4 +19,18 @@ export function create(title: string, content?:string):Note{
 
   notes.push(note);
   return note;
+}
+
+export function list(q?: string){
+
+  if(!q){
+    return notes;
+  }
+
+  let searchTerm=q.toLowerCase();
+const filteredNotes=notes.filter((note)=>
+  note.title.toLowerCase().includes(searchTerm)|| note.content?.toLowerCase().includes(searchTerm)
+)
+
+return filteredNotes;
 }

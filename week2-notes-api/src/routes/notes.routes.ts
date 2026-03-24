@@ -1,9 +1,10 @@
-import {create} from "../repository/notes.repo.js";
-import { createNoteSchema } from "../schemas/notes.schemas.js";
-import type { createNote } from "../types/notes.js";
+
+import {create,list} from "../repository/notes.repo.js";
+import { createNoteSchema, createQuerystringSchema } from "../schemas/notes.schemas.js";
+import type { createNote, qQuery } from "../types/notes.js";
 import type { FastifyInstance } from "fastify";
 
-export async function notesPost(fastify: FastifyInstance){
+export async function notesRoutes(fastify: FastifyInstance){
 
   fastify.post<{Body:createNote}>('/',{schema: createNoteSchema},async(request,reply)=>{
 
@@ -13,7 +14,22 @@ export async function notesPost(fastify: FastifyInstance){
       reply.status(201).send(newNote);
     }
     catch(Error){
-      reply.status(500).send({"error":"InternalServerError","message":"An unexpected error occurred while creating the note"});
+      reply.status(500).send({"error":"InternalServerError","message":"Failed to create note"});
+    }
+  });
+
+  fastify.get<{Querystring:qQuery}>('/',{schema: createQuerystringSchema}, async(request,reply)=>{
+
+    try{
+      const {q}= request.query;
+
+      const filteredNotes= list(q);
+      reply.status(200).send(filteredNotes);
+    }
+    catch(e){
+
+      reply.status(500).send({"error": "InternalServerError","message":"Failed to fetch notes"});
     }
   })
 }
+

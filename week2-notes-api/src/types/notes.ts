@@ -12,3 +12,6 @@ export interface createNote{
   content?: string
 }
 
+export interface qQuery{
+  q?: string
+}
