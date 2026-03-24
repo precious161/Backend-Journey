@@ -6,6 +6,7 @@ import type { FastifyInstance } from "fastify";
 
 export async function notesRoutes(fastify: FastifyInstance){
 
+  // POST /notes Route
   fastify.post<{Body:createNote}>('/',{schema: createNoteSchema},async(request,reply)=>{
 
     try{
@@ -18,6 +19,7 @@ export async function notesRoutes(fastify: FastifyInstance){
     }
   });
 
+  // GET /notes Route
   fastify.get<{Querystring:qQuery}>('/',{schema: createQuerystringSchema}, async(request,reply)=>{
 
     try{
@@ -32,6 +34,7 @@ export async function notesRoutes(fastify: FastifyInstance){
     }
   });
 
+  // GET /notes/:id Route
   fastify.get<{Params: iParams}>('/:id',{schema: createParamsSchema}, async(request,reply)=>{
 
 
@@ -47,6 +50,7 @@ export async function notesRoutes(fastify: FastifyInstance){
 
   });
 
+  // PUT /notes/:id Route
   fastify.put<{Params: iParams, Body: createNote}>('/:id',{schema: updateNoteSchema}, async(request,reply)=>{
 
     const {id}= request.params;
@@ -61,7 +65,7 @@ export async function notesRoutes(fastify: FastifyInstance){
     reply.status(200).send(updatedNote);
   });
 
-
+   // DELETE /notes/:id Route
   fastify.delete<{Params:iParams}>('/:id',{schema: deleteNoteSchema},async(request,reply)=>{
 
     const {id}= request.params;

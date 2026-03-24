@@ -1,5 +1,5 @@
-import { title } from "node:process";
 
+// POST /notes method Schema
 export const createNoteSchema={
 body:{
   type: 'object',
@@ -24,6 +24,7 @@ response:{
 
 };
 
+// GET /notes Schema
 export const createQuerystringSchema={
 querystring:{
   type: 'object',
@@ -48,6 +49,8 @@ response:{
 }
 };
 
+
+// GET /notes/:id Schema
 export const createParamsSchema={
   params:{
     type: 'object',
@@ -77,6 +80,8 @@ export const createParamsSchema={
   }
 }
 
+
+// PUT /notes/:id Schema
 export const updateNoteSchema={
   params:{
     type: 'object',
@@ -115,6 +120,7 @@ export const updateNoteSchema={
 }
 
 
+// DELETE /notes/:id Schema
 export const deleteNoteSchema={
   params:{
     type:'object',

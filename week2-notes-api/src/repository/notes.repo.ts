@@ -3,6 +3,7 @@ import type { Note } from "../types/notes.js";
 
 let notes:Note[]=[];
 
+// POST /notes Method
 export function create(title: string, content?:string):Note{
 
   const id=crypto.randomUUID();
@@ -21,6 +22,7 @@ export function create(title: string, content?:string):Note{
   return note;
 }
 
+// GET /notes Method
 export function list(q?: string){
 
   if(!q){
@@ -35,6 +37,7 @@ const filteredNotes=notes.filter((note)=>
 return filteredNotes;
 }
 
+// GET /notes/:id Method
 export function findById(id: string){
 
   const foundNote= notes.find(note=>
@@ -44,6 +47,7 @@ export function findById(id: string){
   return foundNote;
 }
 
+// PUT /notes/:id Method
 export function update(id: string, title: string, content?: string):Note|undefined{
 
   const index= notes.findIndex(note=>
@@ -75,6 +79,7 @@ if(!oldNote){
   return updatedNote;
 }
 
+// DELETE /notes/:id Method
 export function deleteNote(id: string){
 
   let index= notes.findIndex(note=>
