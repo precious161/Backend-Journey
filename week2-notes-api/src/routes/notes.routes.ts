@@ -1,7 +1,7 @@
 
-import {create,list} from "../repository/notes.repo.js";
-import { createNoteSchema, createQuerystringSchema } from "../schemas/notes.schemas.js";
-import type { createNote, qQuery } from "../types/notes.js";
+import {create,findById,list} from "../repository/notes.repo.js";
+import { createNoteSchema, createParamsSchema, createQuerystringSchema } from "../schemas/notes.schemas.js";
+import type { createNote, iParams, qQuery } from "../types/notes.js";
 import type { FastifyInstance } from "fastify";
 
 export async function notesRoutes(fastify: FastifyInstance){
@@ -30,6 +30,21 @@ export async function notesRoutes(fastify: FastifyInstance){
 
       reply.status(500).send({"error": "InternalServerError","message":"Failed to fetch notes"});
     }
-  })
+  });
+
+  fastify.get<{Params: iParams}>('/:id',{schema: createParamsSchema}, async(request,reply)=>{
+
+
+
+      const {id}= request.params;
+      const foundNote=findById(id);
+
+      if(!foundNote){
+        return reply.status(404).send({"error":"NotFoundError","message":"Note not found"});
+      }
+
+      reply.status(200).send(foundNote);
+
+  });
 }
 

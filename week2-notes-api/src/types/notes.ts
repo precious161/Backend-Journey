@@ -15,3 +15,7 @@ export interface createNote{
 export interface qQuery{
   q?: string
 }
+
+export interface iParams{
+  id: string
+}

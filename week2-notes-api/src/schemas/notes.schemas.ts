@@ -46,3 +46,32 @@ response:{
    }
 }
 };
+
+export const createParamsSchema={
+  params:{
+    type: 'object',
+    required: ['id'],
+    properties:{
+      id: { type: 'string'}
+    }
+  },
+  response:{
+    200:{
+       type: 'object',
+       properties:{
+      id:{type: 'string'},
+      title: { type: 'string'},
+      content: { type: 'string'},
+      createdAt: { type : 'string'},
+      updatedAt: { type: 'string'}
+    }
+    },
+    404:{
+      type: 'object',
+      properties:{
+        error: { type: 'string'},
+        message: { type: 'string'}
+      }
+    }
+  }
+}

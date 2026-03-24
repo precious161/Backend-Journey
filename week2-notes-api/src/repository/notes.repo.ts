@@ -34,3 +34,12 @@ const filteredNotes=notes.filter((note)=>
 
 return filteredNotes;
 }
+
+export function findById(id: string){
+
+  const foundNote= notes.find(note=>
+      note.id===id
+  )
+
+  return foundNote;
+}
