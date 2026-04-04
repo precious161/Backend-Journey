@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=precious
+      - POSTGRES_PASSWORD=tasks1234
+      - POSTGRES_DB=tasks_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  api:
+    build: .
+    ports:
+      - "3274:3274"
+      - "5555:5555"
+    environment:
+      - DATABASE_URL=postgresql://precious:tasks1234@db:5432/tasks_db?schema=public
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+      - ./.env:/usr/src/app/.env
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
