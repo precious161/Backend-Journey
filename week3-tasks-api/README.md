@@ -95,3 +95,52 @@ To run the API on your host while the database remains containerized:
 ## Safety & Serialization
 
 Input is strictly validated using **JSON Schemas** via Fastify's AJV engine. Outgoing responses are serialized to ensure internal database implementation details (like specific foreign keys or internal flags) remain private.
+
+Since the Week 4 update focuses on how the user's identity is verified, we should include the **Authentication & Authorization** logic specifically. This covers how a user gets their token and how that token is then used to unlock the Tasks API.
+
+Here is the documentation for the **Authentication** layer we implemented:
+
+---
+
+## Week 4: Authentication & Security Layer
+
+### **The Authentication Mechanism**
+
+The system uses **JWT (JSON Web Tokens)** to handle stateless authentication. Instead of the server remembering who you are (session), the server provides you with a signed token that you must present with every request.
+
+#### **1. Authentication Flow**
+
+1. **Identity Verification**: The user sends credentials to the `/auth/login` endpoint.
+2. **Token Issuance**: Upon successful verification, the server signs a JWT containing the `userId`.
+3. **Storage**: The client stores this token (usually in LocalStorage or an HTTP-only cookie).
+4. **Authorization**: The client includes the token in the `Authorization` header for all protected `/tasks` routes.
+
+#### **2. Security Implementation: The `onRequest` Hook**
+
+We implemented a global lifecycle hook using `fastify.addHook('onRequest', fastify.authenticate)`. This acts as a "Gatekeeper":
+
+- **Before Schema Validation**: The hook runs before the server parses the request body, saving resources.
+- **Token Verification**: It decodes the JWT and verifies the signature using the `JWT_SECRET`.
+- **Identity Injection**: Once verified, the decoded payload (including the `userId`) is attached to the `request` object, making it available to the Controller.
+
+### **Auth API Specification**
+
+**Base Path:** `/auth` (or your specific auth prefix)
+
+| Method | Endpoint    | Description                          | Requirements                |
+| :----- | :---------- | :----------------------------------- | :-------------------------- |
+| `POST` | `/register` | Create a new user account            | `email`, `password`, `name` |
+| `POST` | `/login`    | Exchange credentials for a JWT token | `email`, `password`         |
+
+### **Configuration**
+
+To support this layer, the following must be configured in the `.env` file:
+
+- **`JWT_SECRET`**: A long, random string used to sign and verify tokens. **Do not share this.**
+- **`TOKEN_EXPIRY`**: (Optional) Defines how long a token remains valid (e.g., `1h`, `7d`).
+
+---
+
+### **Summary of the "Secure Handshake"**
+
+By combining the **Auth Module** (Identity) with the **Task Module** (Action), we have achieved a decoupled security model. The Task module doesn't need to know _how_ to log a user in; it only needs to trust that the `request.user` object provided by the `onRequest` hook is valid.

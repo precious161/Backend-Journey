@@ -1,8 +1,7 @@
 import type { FastifyRequest, FastifyReply} from "fastify";
-import { TaskRepository } from "../repositories/task.repository.js";
 import { TaskServices } from "../services/task.service.js";
 import type { Tquery,Tparams } from "../types/tasks.js";
-import { userInfo } from "node:os";
+
 
 export class TaskController{
 
@@ -34,7 +33,10 @@ getTask= async(request:FastifyRequest<{Querystring:Tquery}>, reply:FastifyReply)
          return reply.status(200).send(filteredTasks);
       }
       catch(e:any){
-            return reply.status(404).send({"error":"NotFoundError","message":"Tasks not found."});
+            return reply.status(401).send({
+              messagge: "Authentication required to fetch tasks.",
+              error:"UnauthorizedError"
+            });
       }
 }
 
@@ -47,7 +49,11 @@ getTasksById= async(request:FastifyRequest<{Params:Tparams}>,reply:FastifyReply)
         return reply.status(200).send(task);
       }
       catch(e:any){
-        return reply.status(404).send({"error":"NotFoundError","message":"Task not found."})
+        return reply.status(404).send(
+          {
+            message: "Task not found or you do not have permission to view it.",
+            error:"NotFoundError"}
+        );
       }
 }
 updateTask= async(request:FastifyRequest<{Params:Tparams}>,reply:FastifyReply)=>{
@@ -60,7 +66,10 @@ updateTask= async(request:FastifyRequest<{Params:Tparams}>,reply:FastifyReply)=>
       }
       catch(e){
 
-        return reply.status(404).send({"error":"NotFoundError","message":"Task not found."})
+        return reply.status(404).send({
+          message: "Task not found or update unauthorized.",
+          error:"NotFoundError"
+        })
       }
 }
 
@@ -75,7 +84,10 @@ deleteTask=async (request:FastifyRequest<{Params:Tparams}>,reply:FastifyReply)=>
     }
     catch(e:any){
 
-      return reply.status(404).send({"error":"NotFoundError","message":"Task not found."});
+      return reply.status(404).send({
+        message: "Task not found or deletion unauthorized.",
+        error:"NotFoundError"
+      });
     }
   };
 
