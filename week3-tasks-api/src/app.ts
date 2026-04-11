@@ -8,6 +8,6 @@ export const app = Fastify({logger:true});
 
 app.register(prismaPlugin);
 app.register(authPlugin);
-app.register(TaskRoutes,{prefix:'/tasks'});
 app.register(AuthRoutes, { prefix: '/auth'});
+app.register(TaskRoutes,{prefix:'/tasks'});
 
