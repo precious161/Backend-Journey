@@ -7,23 +7,20 @@ export class TaskServices{
   constructor(private taskRepo:TaskRepository ){}
 
 
-  async addTask(task:CreateTaskDTO){
+  async addTask(task:CreateTaskDTO, userId: number){
 
-    return await this.taskRepo.create({
-      ...task,
-      user: {connect: { id:1}}
-    });
+    return await this.taskRepo.create(task,userId);
   }
 
 
-  async findAllTasks(status?: string){
-    return await this.taskRepo.findAll(status);
+  async findAllTasks(userId:number,status?: string){
+    return await this.taskRepo.findAll(userId,status);
   }
 
 
-  async findTaskById(id:number){
+  async findTaskById(id:number,userId: number){
 
-    const task= await this.taskRepo.findById(id);
+    const task= await this.taskRepo.findById(id,userId);
 
     if(!task){
       throw new Error(`Task wth id ${id} not found.`);
@@ -33,21 +30,21 @@ export class TaskServices{
   }
 
 
-  async updateTask(id:number, task:Prisma.TaskUpdateInput){
+  async updateTask(id:number, userId: number ,task:Prisma.TaskUpdateInput){
 
     try{
-         return await this.taskRepo.update(id,task);
+         return await this.taskRepo.update(id,userId,task);
     }
     catch(e:any){
-      throw new Error(`Task with id ${id} not found.`)
+      throw new Error(`Task with id ${id} not found or unauthorized.`)
     }
   }
 
-  async deleteTask(id: number) {
+  async deleteTask(id: number, userId:number) {
   try {
-    return await this.taskRepo.delete(id);
+    return await this.taskRepo.delete(id,userId);
   } catch (e) {
-    throw new Error(`Task with id ${id} not found.`);
+    throw new Error(`Task with id ${id} not found or unauthorized.`);
   }
 }
 
