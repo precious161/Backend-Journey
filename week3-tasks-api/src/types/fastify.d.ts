@@ -23,3 +23,13 @@ declare module "fastify"{
 }
 }
 
+export interface signUpBody{
+  name: string
+  email: string
+  passwordHash: string
+}
+
+export interface loginBody{
+  email: string
+  password: string
+}
