@@ -1,7 +1,7 @@
 import { app } from "./app.js";
-import "dotenv/config";
+import { config } from "./config/env.js";
 
-const port=Number(process.env.PORT) || 3274;
+const port= config.port || 3274;
 const host='0.0.0.0';
 
 const start= async ()=>{
