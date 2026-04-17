@@ -6,7 +6,9 @@ export class AuthService{
 
   constructor(private authRepo: AuthRepository){};
 
+
   async register(data: Prisma.UserCreateInput){
+
 
     const existingUser= await this.authRepo.findByEmail(data.email);
 
@@ -14,11 +16,11 @@ export class AuthService{
       throw new Error("User already registered.")
     }
 
-    const passwordHash= await bcrypt.hash(data.passwordHash,10);
+    const password= await bcrypt.hash(data.passwordHash,10);
 
     const newUser= await this.authRepo.create({
       ...data,
-      passwordHash: passwordHash
+      passwordHash: password
     })
 
     return newUser;

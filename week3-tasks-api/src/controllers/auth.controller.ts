@@ -7,21 +7,14 @@ export class AuthController{
 
   register= async (request: FastifyRequest<{Body:signUpBody}>, reply: FastifyReply)=>{
 
-    try{
-
       const {passwordHash, ...newUser}= await this.authService.register(request.body);
 
       return reply.status(201).send(newUser);
-    }
-    catch(err: any){
 
-      return reply.status(500).send({message:"Internal Service Error",error:"InternalServiceError"});
-    }
   }
 
   login= async (request:FastifyRequest<{Body:loginBody}>,reply:FastifyReply)=>{
 
-    try{
 
       const {email,password}=request.body;
 
@@ -40,9 +33,5 @@ export class AuthController{
       return reply.status(200).send({user:userWithoutPassword,token});
 
     }
-    catch(err: any){
 
-      return reply.status(500).send({message:"Internal Service Error",error:"InternalServiceError"});
-    }
   }
-}

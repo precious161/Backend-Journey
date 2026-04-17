@@ -2,11 +2,11 @@
 export const registerSchema={
   body:{
     type: "object",
-    required: ["email","name","password"],
+    required: ["email","name","passwordHash"],
     properties:{
       email : {type: 'string', format:'email'},
       name: { type: 'string'},
-      password: { type:'string', minLength:8}
+      passwordHash: { type:'string', minLength:8}
     }
   },
   response:{

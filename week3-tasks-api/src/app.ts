@@ -4,6 +4,7 @@ import { TaskRoutes } from "./routes/tasks.routes.js";
 import  authPlugin from "./plugins/auth.js";
 import { AuthRoutes } from "./routes/auth.routes.js";
 import { config } from "./config/env.js";
+import  errorPlugin  from "./plugins/error-handler.js";
 
 let loggerOptions: any=true;
 
@@ -24,6 +25,7 @@ export const app = Fastify({logger:loggerOptions});
 
 app.register(prismaPlugin, { dbUrl: config.dbUrl});
 app.register(authPlugin, { secret: config.jwtSecret});
+app.register(errorPlugin);
 app.register(AuthRoutes, { prefix: '/auth'});
 app.register(TaskRoutes,{prefix:'/tasks'});
 
