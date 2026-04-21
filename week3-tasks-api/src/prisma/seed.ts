@@ -3,8 +3,9 @@ import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
 import pg from "pg";
 import * as bcrypt from "bcrypt";
+import { config } from "../config/env.js";
 
-const connectionString=process.env.DATABASE_URL;
+const connectionString= config.dbUrl;
 const pool= new pg.Pool({connectionString});
 const adapter = new PrismaPg(pool);
 const prisma= new PrismaClient({adapter});

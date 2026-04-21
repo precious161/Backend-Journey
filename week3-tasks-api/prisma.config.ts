@@ -11,9 +11,9 @@ if(!databaseUrl){
 }
 
 export default defineConfig({
-  schema: "../prisma/schema.prisma",
+  schema: "prisma/schema.prisma",
   migrations: {
-    path: "prisma/migrations",
+    path: "src/prisma/migrations",
     seed:'npx tsx src/prisma/seed.ts'
   },
   datasource:{
