@@ -37,7 +37,7 @@ describe("API integration tests",()=>{
     expect(res.statusCode).toBe(401);
   });
 
-  // Happy paht with DB interaction
+  // Happy path with DB interaction
   it("should successfully signup, login and create a task", async ()=>{
 
   const testingEmail = `tester-${Date.now()}@example.com`;
