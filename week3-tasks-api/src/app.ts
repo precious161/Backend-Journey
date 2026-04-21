@@ -6,6 +6,7 @@ import { AuthRoutes } from "./routes/auth.routes.js";
 import { config } from "./config/env.js";
 import  errorPlugin  from "./plugins/error-handler.js";
 
+
 let loggerOptions: any=true;
 
 if(config.node_env==="development"){
@@ -21,11 +22,18 @@ if(config.node_env==="development"){
 else if(config.node_env==="production"){
     loggerOptions=true
 }
-export const app = Fastify({logger:loggerOptions});
+
+export const buildApp= async()=>{
+
+   const app = Fastify({logger:loggerOptions});
 
 app.register(prismaPlugin, { dbUrl: config.dbUrl});
 app.register(authPlugin, { secret: config.jwtSecret});
 app.register(errorPlugin);
 app.register(AuthRoutes, { prefix: '/auth'});
 app.register(TaskRoutes,{prefix:'/tasks'});
+
+return app;
+}
+
 
